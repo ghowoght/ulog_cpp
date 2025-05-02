@@ -123,8 +123,23 @@ class Field {
   /**
    * @brief Map of all basic types. Used to resolve basic types from strings.
    */
-  static const std::map<std::string, TypeAttributes> kBasicTypes;
-
+  static const std::map<std::string, TypeAttributes>& getBasicTypes()
+  {
+    static const std::map<std::string, TypeAttributes> kBasicTypes{
+        {"int8_t", {"int8_t", Field::BasicType::INT8, 1}},
+        {"uint8_t", {"uint8_t", Field::BasicType::UINT8, 1}},
+        {"int16_t", {"int16_t", Field::BasicType::INT16, 2}},
+        {"uint16_t", {"uint16_t", Field::BasicType::UINT16, 2}},
+        {"int32_t", {"int32_t", Field::BasicType::INT32, 4}},
+        {"uint32_t", {"uint32_t", Field::BasicType::UINT32, 4}},
+        {"int64_t", {"int64_t", Field::BasicType::INT64, 8}},
+        {"uint64_t", {"uint64_t", Field::BasicType::UINT64, 8}},
+        {"float", {"float", Field::BasicType::FLOAT, 4}},
+        {"double", {"double", Field::BasicType::DOUBLE, 8}},
+        {"bool", {"bool", Field::BasicType::BOOL, 1}},
+        {"char", {"char", Field::BasicType::CHAR, 1}}};
+    return kBasicTypes;
+  }
   Field() = default;
 
   /**
@@ -145,8 +160,8 @@ class Field {
   Field(const std::string& type_str, std::string name_str, int array_length_int = -1)
       : _array_length(array_length_int), _name(std::move(name_str))
   {
-    auto it = kBasicTypes.find(type_str);
-    if (it != kBasicTypes.end()) {
+    auto it = getBasicTypes().find(type_str);
+    if (it != getBasicTypes().end()) {
       _type = it->second;
     } else {
       // if not a basic type, set it to recursive

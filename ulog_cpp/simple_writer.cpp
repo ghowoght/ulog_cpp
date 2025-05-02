@@ -75,8 +75,8 @@ void SimpleWriter::writeMessageFormat(const std::string& name, const std::vector
   // Check field types and verify padding
   unsigned message_size = 0;
   for (const auto& field : fields) {
-    const auto& basic_type_iter = Field::kBasicTypes.find(field.type().name);
-    if (basic_type_iter == Field::kBasicTypes.end()) {
+    const auto& basic_type_iter = Field::getBasicTypes().find(field.type().name);
+    if (basic_type_iter == Field::getBasicTypes().end()) {
       throw UsageException("Invalid field type (nested formats are not supported): " +
                            field.type().name);
     }

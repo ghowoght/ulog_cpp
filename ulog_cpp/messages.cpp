@@ -97,8 +97,8 @@ Field::Field(const char* str, int len)
     }
     _array_length = std::stoi(std::string(key_array.substr(bracket + 1)));
   }
-  auto it_basic = kBasicTypes.find(type_name);
-  if (it_basic != kBasicTypes.end()) {
+  auto it_basic = getBasicTypes().find(type_name);
+  if (it_basic != getBasicTypes().end()) {
     _type = it_basic->second;
   } else {
     // Assume this is a recursive type (unresolved at this point)
@@ -157,20 +157,6 @@ std::shared_ptr<Field> Field::nestedField(const std::string& name) const
   }
   return _type.nested_message->field(name);
 }
-
-const std::map<std::string, Field::TypeAttributes> Field::kBasicTypes{
-    {"int8_t", {"int8_t", Field::BasicType::INT8, 1}},
-    {"uint8_t", {"uint8_t", Field::BasicType::UINT8, 1}},
-    {"int16_t", {"int16_t", Field::BasicType::INT16, 2}},
-    {"uint16_t", {"uint16_t", Field::BasicType::UINT16, 2}},
-    {"int32_t", {"int32_t", Field::BasicType::INT32, 4}},
-    {"uint32_t", {"uint32_t", Field::BasicType::UINT32, 4}},
-    {"int64_t", {"int64_t", Field::BasicType::INT64, 8}},
-    {"uint64_t", {"uint64_t", Field::BasicType::UINT64, 8}},
-    {"float", {"float", Field::BasicType::FLOAT, 4}},
-    {"double", {"double", Field::BasicType::DOUBLE, 8}},
-    {"bool", {"bool", Field::BasicType::BOOL, 1}},
-    {"char", {"char", Field::BasicType::CHAR, 1}}};
 
 int Field::sizeBytes() const
 {
